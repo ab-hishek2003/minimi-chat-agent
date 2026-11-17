@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+openai
+tavily-python
+python-dotenv
+huggingface_hub
+pillow
+google-genai
+requests
+python-multipart
+pypdf
+python-docx

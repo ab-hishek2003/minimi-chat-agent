@@ -1,0 +1,18 @@
+# Secrets - never commit these
+.env
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local data: private chats and generated pictures
+chat_memory.db
+generated_images/
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
