@@ -19,9 +19,10 @@
 
 # minimi
 
-**minimi** is a chat assistant I built from scratch: a FastAPI backend, a clean ChatGPT-style web interface, live web search, image and document understanding, and image generation. Conversations are saved per visitor, and the server protects its API keys with rate limits.
+**minimi** is a chat assistant built with Claude as a coding assistant: a FastAPI backend, a clean ChatGPT-style web interface, live web search, image and document understanding, and image generation. Conversations are saved per visitor, and the server protects its API keys with rate limits.
 
 > **Design notes:** see [design.md](design.md) for the decisions behind speed, accuracy and memory.
+>
 > **Try it:** [https://minimi-jo54.onrender.com](https://minimi-jo54.onrender.com)
 > The demo runs on a free hosting plan, so the first visit after a quiet period can take about a minute to wake up.
 
@@ -31,7 +32,7 @@
 - **Live web search** - the model decides when it needs fresh facts and searches with Tavily
 - **Sees pictures** - attach photos and ask questions about them (vision model on Groq)
 - **Reads documents** - PDF, Word (`.docx`), text, CSV, Markdown and JSON files, remembered for follow-up questions
-- **Creates images** - text-to-image through Cloudflare Workers AI (FLUX), with Gemini and Hugging Face as fallbacks
+- **Creates images** - text-to-image through Cloudflare Workers AI (FLUX), with Gemini and Hugging Face as fallbacks (switched off on the live demo, which has no image key)
 - **Voice** - dictate with the microphone and have replies read aloud (browser speech features)
 - **Polished interface** - light and dark mode with an animated switch, collapsible sidebar, formatted answers, copyable code blocks
 - **Reliable by design** - failed calls leave no trace in memory, broken model output is detected and retried, 16 automated tests
