@@ -128,3 +128,38 @@ def test_failed_ai_call_leaves_no_trace(client, app_module):
     app_module.client.chat.completions.create = boom
     assert client.post("/chat", data={"message": "hi"}).status_code == 502
     assert client.get("/conversations").json() == []
+
+
+def test_remembers_questions_from_other_chats(client, app_module):
+    client.post("/chat", data={"message": "What is the capital of France?"})
+    client.post("/chat", data={"message": "hello again"})  # a brand new chat
+    system = app_module.client.chat.completions.create.calls[-1]["messages"][0]["content"]
+    assert "capital of France" in system and "[20" in system  # the question and when it was asked
+
+
+def test_user_messages_carry_a_timestamp(client, app_module):
+    client.post("/chat", data={"message": "hi"})
+    assert app_module.client.chat.completions.create.calls[-1]["messages"][-1]["content"].startswith("[20")
+
+
+def test_web_search_tool_is_used_when_the_model_asks(client, app_module):
+    calls = []
+
+    def model(**kwargs):
+        calls.append(kwargs)
+        if len(calls) == 1:
+            call = types.SimpleNamespace(id="1", function=types.SimpleNamespace(name="web_search", arguments='{"query": "latest python version"}'))
+            msg = types.SimpleNamespace(content=None, tool_calls=[call])
+        else:
+            msg = types.SimpleNamespace(content="Python 3.14 is current.", tool_calls=None)
+        return types.SimpleNamespace(choices=[types.SimpleNamespace(message=msg)])
+
+    app_module.client.chat.completions.create = model
+    app_module.tavily.search = lambda **kw: {"results": [{"title": "T", "content": "C", "url": "https://example.com"}]}
+    data = client.post("/chat", data={"message": "what is the latest python?"}).json()
+    assert data["used_search"] is True and data["search_query"] == "latest python version"
+    assert any(isinstance(m, dict) and m.get("role") == "tool" for m in calls[1]["messages"])
+
+
+def test_config_hides_images_without_a_key(client):
+    assert client.get("/config").json() == {"images": False}

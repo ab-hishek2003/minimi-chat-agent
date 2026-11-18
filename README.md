@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="LIVE_DEMO_URL"><b>Live demo</b></a> ·
+  <a href="https://minimi-jo54.onrender.com"><b>Live demo</b></a> ·
   <a href="#features">Features</a> ·
   <a href="#quick-start">Quick start</a> ·
   <a href="#api">API</a> ·
@@ -21,7 +21,8 @@
 
 **minimi** is a chat assistant I built from scratch: a FastAPI backend, a clean ChatGPT-style web interface, live web search, image and document understanding, and image generation. Conversations are saved per visitor, and the server protects its API keys with rate limits.
 
-> **Try it:** [LIVE_DEMO_URL](LIVE_DEMO_URL)
+> **Design notes:** see [design.md](design.md) for the decisions behind speed, accuracy and memory.
+> **Try it:** [https://minimi-jo54.onrender.com](https://minimi-jo54.onrender.com)
 > The demo runs on a free hosting plan, so the first visit after a quiet period can take about a minute to wake up.
 
 ## Features
@@ -33,7 +34,7 @@
 - **Creates images** - text-to-image through Cloudflare Workers AI (FLUX), with Gemini and Hugging Face as fallbacks
 - **Voice** - dictate with the microphone and have replies read aloud (browser speech features)
 - **Polished interface** - light and dark mode with an animated switch, collapsible sidebar, formatted answers, copyable code blocks
-- **Reliable by design** - failed calls leave no trace in memory, broken model output is detected and retried, 12 automated tests
+- **Reliable by design** - failed calls leave no trace in memory, broken model output is detected and retried, 16 automated tests
 
 ## Screenshots
 
@@ -127,7 +128,7 @@ pip install pytest
 pytest -q
 ```
 
-The 12 tests replace the AI model with a fake, so they need no keys or internet. They cover chat storage, visitor isolation, rate limits, picture and document handling, file limits, broken-output recovery and failure rollback.
+The 16 tests replace the AI model with a fake, so they need no keys or internet. They cover chat storage, visitor isolation, rate limits, picture and document handling, file limits, broken-output recovery and failure rollback.
 
 ## Deployment
 
